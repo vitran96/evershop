@@ -22,6 +22,20 @@ try {
     require('./user/create');
   } else if (command === 'user:changePassword') {
     require('./user/changePassword');
+  } else if (command === 'commands') {
+    process.env.NODE_ENV = 'development';
+    const { info } = require('../src/lib/log/logger');
+    info(`
+      evershop <command> [options]
+      Commands:
+        build                Build the application
+        dev                  Start the application in development mode
+        start                Start the application in production mode
+        install              Install the application
+        user:create          Create a new user
+        user:changePassword  Change user password
+        commands             Show this help message
+      `);
   } else {
     throw new Error('Invalid command');
   }
