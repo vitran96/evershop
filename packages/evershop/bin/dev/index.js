@@ -4,6 +4,14 @@ require('dotenv').config();
 const { start } = require('@evershop/evershop/bin/lib/startUp');
 const { watchComponents } = require('../lib/watch/watchComponents');
 
-(async () => {
+// (async () => {
+//   await start(watchComponents);
+// })();
+
+async function runDev() {
   await start(watchComponents);
-})();
+}
+
+module.exports = {
+  runDev
+};

@@ -1,5 +1,7 @@
 process.env.ALLOW_CONFIG_MUTATIONS = true;
+
 const config = require('config');
+
 const { existsSync, rmSync, mkdirSync } = require('fs');
 const path = require('path');
 const { CONSTANTS } = require('@evershop/evershop/src/lib/helpers');
@@ -60,6 +62,7 @@ if (existsSync(path.resolve(CONSTANTS.BUILDPATH))) {
     error(e);
     process.exit(0);
   }
+
   process.env.ALLOW_CONFIG_MUTATIONS = false;
 
   const routes = getRoutes();
