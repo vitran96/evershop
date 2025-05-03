@@ -1,52 +1,83 @@
 #!/usr/bin/env node
+
 /* eslint-disable global-require */
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
 
-const { argv } = yargs(hideBin(process.argv));
-const command = argv._[0];
-
-try {
-  if (command === 'build') {
+yargs(hideBin(process.argv))
+  .command('build', 'Build the application', {
+    "skip-minify": {
+      description: 'Skip minify',
+      type: 'boolean',
+      default: false
+    }
+  }, () => {
     process.env.NODE_ENV = 'production';
     require('./build/index');
-  } else if (command === 'dev') {
+  })
+  .command('dev', 'Start the application in development mode', {}, () => {
     process.env.NODE_ENV = 'development';
     require('./dev');
-  } else if (command === 'start') {
+  })
+  .command('start', 'Start the application in production mode', {
+    debug: { 
+      description: 'Enable debug mode', 
+      type: 'boolean', 
+      default: false
+    }
+  }, () => {
     process.env.NODE_ENV = 'production';
     require('./start');
-  } else if (command === 'install') {
+  })
+  .command('install', 'Install the application', {}, () => {
     require('./install');
-  } else if (command === 'user:create') {
+  })
+  .command('user:create', 'Create a new Admin user', {
+    email: {
+      description: 'Admin user email',
+      type: 'string',
+      demandOption: true
+    },
+    name: {
+      description: 'Admin name',
+      type: 'string',
+      demandOption: true
+    },
+    password: {
+      description: 'Admin password',
+      type: 'string',
+      demandOption: true
+    }
+  }, () => {
     require('./user/create');
-  } else if (command === 'user:changePassword') {
+  })
+  .command('user:changePassword', 'Change Admin user password', {
+    email: {
+      description: 'Admin user email',
+      type: 'string',
+      demandOption: true
+    },
+    password: {
+      description: 'Admin password',
+      type: 'string',
+      demandOption: true
+    }
+  }, () => {
     require('./user/changePassword');
-  } else if (command === 'commands') {
-    process.env.NODE_ENV = 'development';
-    const { info } = require('../src/lib/log/logger');
-    info(`
-      evershop <command> [options]
-      Commands:
-        build                Build the application
-        dev                  Start the application in development mode
-        start                Start the application in production mode
-        install              Install the application
-        user:create          Create a new user
-        user:changePassword  Change user password
-        commands             Show this help message
-      `);
-  } else {
-    throw new Error('Invalid command');
-  }
-} catch (e) {
+  })
+  .demandCommand(1, 'Invalid command')
+  .strict()
+  .help()
+  .alias('h', 'help')
+  .parse();
+
+  
+process.on('uncaughtException', (exception) => {
   const { error } = require('../src/lib/log/logger');
-  error(e);
-}
-const { error } = require('../src/lib/log/logger');
-process.on('uncaughtException', function (exception) {
   error(exception);
 });
+
 process.on('unhandledRejection', (reason, p) => {
+  const { error } = require('../src/lib/log/logger');
   error(`Unhandled Rejection: ${reason} at: ${p}`);
 });
