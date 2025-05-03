@@ -37,11 +37,11 @@ yargs(hideBin(process.argv))
       type: 'boolean', 
       default: false
     }
-  }, () => {
-    // TODO: I am not sure how to pass the debug flag to the start script
+  }, (argv) => {
+    const { debug } = argv;
     process.env.NODE_ENV = 'production';
     const { runStart } = require('./start');
-    runStart();
+    runStart({ isDebug: debug });
   })
   .command('install', 'Install the application', {}, () => {
     const { runInstall } = require('./install');

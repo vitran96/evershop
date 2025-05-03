@@ -4,8 +4,8 @@ require('dotenv').config();
 
 const { start } = require('@evershop/evershop/bin/lib/startUp');
 
-async function runStart() {
-  await start();
+async function runStart({ isDebug }) {
+  await start({ isDebug }, null);
 }
 
 module.exports = {

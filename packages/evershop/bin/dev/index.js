@@ -5,7 +5,7 @@ const { start } = require('@evershop/evershop/bin/lib/startUp');
 const { watchComponents } = require('../lib/watch/watchComponents');
 
 async function runDev() {
-  await start(watchComponents);
+  await start({ isDebug: true }, watchComponents);
 }
 
 module.exports = {
