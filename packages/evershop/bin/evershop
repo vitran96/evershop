@@ -113,7 +113,6 @@ yargs(hideBin(process.argv))
   , (argv) => {
     const { email, password } = argv;
     const { updatePassword } = require('./user/changePassword');
-
     updatePassword({ email, password });
   })
   .demandCommand(1, 'Invalid command')

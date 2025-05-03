@@ -23,7 +23,9 @@ const {
 const { compile } = require('./complie');
 const { getEnabledExtensions } = require('../extension');
 const { loadBootstrapScript } = require('../lib/bootstrap/bootstrap');
+
 require('dotenv').config();
+
 /* Loading modules and initilize routes, components */
 const modules = [...getCoreModules(), ...getEnabledExtensions()];
 
