@@ -49,7 +49,7 @@ if (existsSync(path.resolve(CONSTANTS.BUILDPATH))) {
   mkdirSync(path.resolve(CONSTANTS.BUILDPATH), { recursive: true });
 }
 
-(async () => {
+async function runBuild({ isSkipMinify }) {
   /** Loading bootstrap script from modules */
   try {
     // eslint-disable-next-line no-restricted-syntax
@@ -71,5 +71,9 @@ if (existsSync(path.resolve(CONSTANTS.BUILDPATH))) {
   await buildEntry(routes.filter((r) => isBuildRequired(r)));
 
   /** Build  */
-  await compile(routes);
-})();
+  await compile(routes, { isSkipMinify });
+}
+
+module.exports = {
+  runBuild
+}
